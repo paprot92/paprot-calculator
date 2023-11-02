@@ -1,0 +1,15 @@
+:host {
+  padding: 1rem;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: aliceblue;
+
+  .title {
+    text-align: center;
+  }
+
+  app-calculator {
+    height: calc(100% - 43px);
+  }
+}
