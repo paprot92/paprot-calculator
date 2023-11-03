@@ -6,7 +6,12 @@ import { CurrentInputPipe } from './components/calculator/current-input.pipe';
 import { PreviousInputPipe } from './components/calculator/previous-input.pipe';
 
 @NgModule({
-  declarations: [CalculatorComponent, CalculatorInputComponent, CurrentInputPipe, PreviousInputPipe],
+  declarations: [
+    CalculatorComponent,
+    CalculatorInputComponent,
+    CurrentInputPipe,
+    PreviousInputPipe,
+  ],
   imports: [CommonModule],
   exports: [CalculatorComponent],
 })

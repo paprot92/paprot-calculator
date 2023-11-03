@@ -20,7 +20,9 @@
   <button class="calculator-button" (click)="onNumberButtonClick(2)">2</button>
   <button class="calculator-button" (click)="onNumberButtonClick(3)">3</button>
   <button class="calculator-button">x</button>
-  <button class="calculator-button">+/-</button>
+  <button class="calculator-button" (click)="onChangeSignButtonClick()">
+    +/-
+  </button>
   <button class="calculator-button" (click)="onNumberButtonClick(0)">0</button>
   <button class="calculator-button">,</button>
   <button class="calculator-button">/</button>
