@@ -1,0 +1,29 @@
+<ng-container *ngIf="calculatorState$ | async as state">
+  <app-calculator-input
+    class="calculator-input"
+    [currentInput]="state | currentInput"
+    [previousInput]="state | previousInput"
+  ></app-calculator-input>
+  <button class="calculator-button">X</button>
+  <button class="calculator-button">CE</button>
+  <button class="calculator-button">C</button>
+  <button class="calculator-button">=</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(7)">7</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(8)">8</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(9)">9</button>
+  <button class="calculator-button">+</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(4)">4</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(5)">5</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(6)">6</button>
+  <button class="calculator-button">-</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(1)">1</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(2)">2</button>
+  <button class="calculator-button" (click)="onNumberButtonClick(3)">3</button>
+  <button class="calculator-button">x</button>
+  <button class="calculator-button" (click)="onChangeSignButtonClick()">
+    +/-
+  </button>
+  <button class="calculator-button" (click)="onNumberButtonClick(0)">0</button>
+  <button class="calculator-button">,</button>
+  <button class="calculator-button">/</button>
+</ng-container>
