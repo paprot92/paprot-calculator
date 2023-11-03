@@ -4,9 +4,13 @@
     [currentInput]="state | currentInput"
     [previousInput]="state | previousInput"
   ></app-calculator-input>
-  <button class="calculator-button">X</button>
-  <button class="calculator-button">CE</button>
-  <button class="calculator-button">C</button>
+  <button class="calculator-button" (click)="onRemoveDigitButtonClick()">
+    X
+  </button>
+  <button class="calculator-button" (click)="onResetCurrentNumberButtonClick()">
+    CE
+  </button>
+  <button class="calculator-button" (click)="onResetButtonClick()">C</button>
   <button class="calculator-button">=</button>
   <button class="calculator-button" (click)="onNumberButtonClick(7)">7</button>
   <button class="calculator-button" (click)="onNumberButtonClick(8)">8</button>

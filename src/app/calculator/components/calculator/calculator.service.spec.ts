@@ -57,29 +57,64 @@ describe('CalculatorService', () => {
     expectStateToBeEqualTo(service, { currentNumber: -Number.MAX_VALUE });
   });
 
-  it('should handle number max limit + 1', () => {});
+  it('remove digit should do nothing', () => {
+    service.removeDigit();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
-  it('should handle number min limit - 1', () => {});
+  it('should remove digit', () => {
+    processMultipleInput(service, [1, 2, 3]);
+    service.removeDigit();
+    expectStateToBeEqualTo(service, { currentNumber: 12 });
+  });
 
-  it('should remove last character', () => {});
+  it('should remove last positive digit', () => {
+    service.processDigitInput(2);
+    service.removeDigit();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
-  it('should reset current number', () => {});
+  it('should remove last negative digit', () => {
+    service.processDigitInput(2);
+    service.changeCurrentNumberSign();
+    service.removeDigit();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
-  it('should reset state', () => {});
+  it('reset current number should do nothing', () => {
+    service.resetCurrentNumber();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
-  it('should add numbers', () => {});
+  it('should reset current number', () => {
+    service.processDigitInput(2);
+    service.resetCurrentNumber();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
-  it('should subtract numbers', () => {});
-
-  it('should multiply numbers', () => {});
-
-  it('should divide numbers', () => {});
+  it('should reset state', () => {
+    service.processDigitInput(2);
+    service.reset();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
   it('should change current number sign', () => {
     service.processDigitInput(2);
     service.changeCurrentNumberSign();
     expectStateToBeEqualTo(service, { currentNumber: -2 });
   });
+
+  it('should add numbers', () => {});
+
+  it('should handle number max limit + 1', () => {});
+
+  it('should subtract numbers', () => {});
+
+  it('should handle number min limit - 1', () => {});
+
+  it('should multiply numbers', () => {});
+
+  it('should divide numbers', () => {});
 
   function setUpCurrentNumberToMaxValue(service: CalculatorService) {
     processMultipleInput(

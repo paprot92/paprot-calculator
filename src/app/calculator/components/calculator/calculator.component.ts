@@ -20,4 +20,16 @@ export class CalculatorComponent {
   onChangeSignButtonClick(): void {
     this._calculatorService.changeCurrentNumberSign();
   }
+
+  onRemoveDigitButtonClick(): void {
+    this._calculatorService.removeDigit();
+  }
+
+  onResetCurrentNumberButtonClick(): void {
+    this._calculatorService.resetCurrentNumber();
+  }
+
+  onResetButtonClick(): void {
+    this._calculatorService.reset();
+  }
 }
