@@ -4,11 +4,11 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 export interface ICalculatorState {
   sum?: number;
   operator?: string;
-  currentNumber: number;
+  currentInput: string;
 }
 
 export const CALCULATOR_DEFAULT_STATE: ICalculatorState = {
-  currentNumber: 0,
+  currentInput: '0',
 };
 
 @Injectable()
@@ -21,25 +21,50 @@ export class CalculatorService {
     return this._state$.asObservable();
   }
 
-  removeDigit(): void {
-    const isRemovalProhibited = this._state$.value.currentNumber
-      .toString()
-      .includes('e');
-    if (isRemovalProhibited) return;
-
-    const newCurrentNumberString = this._state$.value.currentNumber
-      .toString()
-      .slice(0, -1);
+  processDigitInput(number: number): void {
+    if (number.toString().length > 1) {
+      throw new Error(`Invalid input: ${number} is not a digit.`);
+    }
+    const newCurrentInput = this.getCurrentInput() + number.toString();
     this._state$.next({
       ...this._state$.value,
-      currentNumber: this.parseStringToNumber(newCurrentNumberString),
+      currentInput: this.parseStringToNumber(newCurrentInput).toString(),
+    });
+  }
+
+  addComma(): void {
+    if (this.getCurrentInput().includes('.')) return;
+    const newCurrentInput = this.getCurrentInput() + '.';
+    this._state$.next({
+      ...this._state$.value,
+      currentInput: newCurrentInput,
+    });
+  }
+
+  changeCurrentNumberSign(): void {
+    this._state$.next({
+      ...this._state$.value,
+      currentInput: (-this.parseStringToNumber(
+        this.getCurrentInput()
+      )).toString(),
+    });
+  }
+
+  removeDigit(): void {
+    const isRemovalProhibited = this.getCurrentInput().includes('e');
+    if (isRemovalProhibited) return;
+
+    const newCurrentInput = this.getCurrentInput().slice(0, -1);
+    this._state$.next({
+      ...this._state$.value,
+      currentInput: +newCurrentInput ? newCurrentInput : '0',
     });
   }
 
   resetCurrentNumber(): void {
     this._state$.next({
       ...this._state$.value,
-      currentNumber: 0,
+      currentInput: '0',
     });
   }
 
@@ -47,30 +72,15 @@ export class CalculatorService {
     this._state$.next(CALCULATOR_DEFAULT_STATE);
   }
 
-  changeCurrentNumberSign(): void {
-    this._state$.next({
-      ...this._state$.value,
-      currentNumber: -this._state$.value.currentNumber,
-    });
-  }
-
-  processDigitInput(number: number): void {
-    if (number.toString().length > 1) {
-      throw new Error(`Invalid input: ${number} is not a digit.`);
-    }
-    let currentNumberString = this._state$.value.currentNumber.toString();
-    const newCurrentNumberString = currentNumberString + number.toString();
-    this._state$.next({
-      ...this._state$.value,
-      currentNumber: this.parseStringToNumber(newCurrentNumberString),
-    });
+  private getCurrentInput(): string {
+    return this._state$.value.currentInput;
   }
 
   private parseStringToNumber(numberAsString: string): number {
     const defaultValue = numberAsString.startsWith('-')
       ? -Number.MAX_VALUE
       : Number.MAX_VALUE;
-    let parsedNumber: number | undefined = Number.parseFloat(numberAsString);
+    let parsedNumber: number | undefined = +numberAsString;
     if (Number.isNaN(parsedNumber)) parsedNumber = 0;
     if (parsedNumber < -Number.MAX_VALUE || parsedNumber > Number.MAX_VALUE)
       parsedNumber = undefined;

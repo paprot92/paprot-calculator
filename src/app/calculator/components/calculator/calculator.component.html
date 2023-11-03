@@ -1,8 +1,8 @@
 <ng-container *ngIf="calculatorState$ | async as state">
   <app-calculator-input
     class="calculator-input"
-    [currentInput]="state | currentInput"
-    [previousInput]="state | previousInput"
+    [currentInput]="state.currentInput"
+    previousInput=""
   ></app-calculator-input>
   <button class="calculator-button" (click)="onRemoveDigitButtonClick()">
     X
@@ -28,6 +28,6 @@
     +/-
   </button>
   <button class="calculator-button" (click)="onNumberButtonClick(0)">0</button>
-  <button class="calculator-button">,</button>
+  <button class="calculator-button" (click)="onCommaButtonClick()">,</button>
   <button class="calculator-button">/</button>
 </ng-container>
