@@ -32,4 +32,8 @@ export class CalculatorComponent {
   onResetButtonClick(): void {
     this._calculatorService.reset();
   }
+
+  onCommaButtonClick(): void {
+    this._calculatorService.addComma();
+  }
 }
