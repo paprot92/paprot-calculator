@@ -24,4 +24,12 @@ export class CalculatorComponent {
   onRemoveDigitButtonClick(): void {
     this._calculatorService.removeDigit();
   }
+
+  onResetCurrentNumberButtonClick(): void {
+    this._calculatorService.resetCurrentNumber();
+  }
+
+  onResetButtonClick(): void {
+    this._calculatorService.reset();
+  }
 }

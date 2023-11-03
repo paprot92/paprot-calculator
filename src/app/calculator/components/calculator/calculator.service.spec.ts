@@ -57,7 +57,7 @@ describe('CalculatorService', () => {
     expectStateToBeEqualTo(service, { currentNumber: -Number.MAX_VALUE });
   });
 
-  it('should remove nothing', () => {
+  it('remove digit should do nothing', () => {
     service.removeDigit();
     expectStateToBeEqualTo(service, { currentNumber: 0 });
   });
@@ -81,9 +81,22 @@ describe('CalculatorService', () => {
     expectStateToBeEqualTo(service, { currentNumber: 0 });
   });
 
-  it('should reset current number', () => {});
+  it('reset current number should do nothing', () => {
+    service.resetCurrentNumber();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
-  it('should reset state', () => {});
+  it('should reset current number', () => {
+    service.processDigitInput(2);
+    service.resetCurrentNumber();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
+
+  it('should reset state', () => {
+    service.processDigitInput(2);
+    service.reset();
+    expectStateToBeEqualTo(service, { currentNumber: 0 });
+  });
 
   it('should change current number sign', () => {
     service.processDigitInput(2);

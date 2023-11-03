@@ -7,11 +7,15 @@ export interface ICalculatorState {
   currentNumber: number;
 }
 
+export const CALCULATOR_DEFAULT_STATE: ICalculatorState = {
+  currentNumber: 0,
+};
+
 @Injectable()
 export class CalculatorService {
-  private _state$: BehaviorSubject<ICalculatorState> = new BehaviorSubject({
-    currentNumber: 0,
-  });
+  private _state$: BehaviorSubject<ICalculatorState> = new BehaviorSubject(
+    CALCULATOR_DEFAULT_STATE
+  );
 
   getStateAsync(): Observable<ICalculatorState> {
     return this._state$.asObservable();
@@ -30,6 +34,17 @@ export class CalculatorService {
       ...this._state$.value,
       currentNumber: this.parseStringToNumber(newCurrentNumberString),
     });
+  }
+
+  resetCurrentNumber(): void {
+    this._state$.next({
+      ...this._state$.value,
+      currentNumber: 0,
+    });
+  }
+
+  reset(): void {
+    this._state$.next(CALCULATOR_DEFAULT_STATE);
   }
 
   changeCurrentNumberSign(): void {
