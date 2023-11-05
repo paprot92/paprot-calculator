@@ -36,4 +36,12 @@ export class CalculatorComponent {
   onCommaButtonClick(): void {
     this._calculatorService.addComma();
   }
+
+  onSumButtonClick(): void {
+    this._calculatorService.sum();
+  }
+
+  onEqualsButtonClick(): void {
+    this._calculatorService.execute();
+  }
 }

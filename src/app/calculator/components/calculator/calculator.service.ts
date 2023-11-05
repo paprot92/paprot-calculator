@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 export interface ICalculatorState {
-  sum?: number;
-  operator?: string;
   currentInput: string;
+  previousInput?: string;
+  operator?: string;
+  total?: number;
 }
 
 export const CALCULATOR_DEFAULT_STATE: ICalculatorState = {
@@ -48,6 +49,30 @@ export class CalculatorService {
         this.getCurrentInput()
       )).toString(),
     });
+  }
+
+  sum(): void {
+    const argA = this.parseStringToNumber(
+      this._state$.value.previousInput ?? '0'
+    );
+    const argB = this.parseStringToNumber(this.getCurrentInput());
+    this._state$.next({
+      previousInput: (argA + argB).toString(),
+      operator: '+',
+      currentInput: '0',
+    });
+  }
+
+  execute(): void {
+    switch (this._state$.value.operator) {
+      case '+':
+        this.sum();
+        this._state$.next({ ...this._state$.value, operator: undefined });
+        break;
+
+      default:
+        break;
+    }
   }
 
   removeDigit(): void {
