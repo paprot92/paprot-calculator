@@ -7,6 +7,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalculatorInputComponent {
-  @Input() previousInput: string = '';
-  @Input() currentInput: string = '';
+  @Input() previousInput: string | undefined;
+  @Input() currentInput: string | undefined;
+  @Input() operator: string | undefined;
 }

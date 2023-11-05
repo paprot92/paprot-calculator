@@ -147,7 +147,59 @@ describe('CalculatorService', () => {
     expectStateToBeEqualTo(service, { currentInput: '-2' });
   });
 
-  it('should add numbers', () => {});
+  it('sum should set operator and total 1', () => {
+    service.sum();
+    expectStateToBeEqualTo(service, {
+      previousInput: '0',
+      currentInput: '0',
+      operator: '+',
+    });
+  });
+
+  it('sum should set operator and total 2', () => {
+    service.processDigitInput(2);
+    service.sum();
+    expectStateToBeEqualTo(service, {
+      previousInput: '2',
+      currentInput: '0',
+      operator: '+',
+    });
+  });
+
+  it('sum should set operator and total 2', () => {
+    service.processDigitInput(2);
+    service.sum();
+    service.processDigitInput(3);
+    expectStateToBeEqualTo(service, {
+      previousInput: '2',
+      currentInput: '3',
+      operator: '+',
+    });
+  });
+
+  it('should sum numbers 1', () => {
+    service.processDigitInput(2);
+    service.sum();
+    service.processDigitInput(3);
+    service.sum();
+    expectStateToBeEqualTo(service, {
+      previousInput: '5',
+      currentInput: '0',
+      operator: '+',
+    });
+  });
+
+  it('should sum numbers 2', () => {
+    service.processDigitInput(2);
+    service.sum();
+    service.processDigitInput(3);
+    service.execute();
+    expectStateToBeEqualTo(service, {
+      previousInput: '5',
+      currentInput: '0',
+      operator: undefined,
+    });
+  });
 
   it('should handle number max limit + 1', () => {});
 
