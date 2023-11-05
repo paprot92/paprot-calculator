@@ -5,7 +5,7 @@ export interface ICalculatorState {
   currentInput: string;
   previousInput?: string;
   operator?: string;
-  total?: number;
+  result?: string;
 }
 
 export const CALCULATOR_DEFAULT_STATE: ICalculatorState = {
@@ -30,6 +30,7 @@ export class CalculatorService {
     this._state$.next({
       ...this._state$.value,
       currentInput: this.parseStringToNumber(newCurrentInput).toString(),
+      result: undefined,
     });
   }
 
@@ -39,6 +40,7 @@ export class CalculatorService {
     this._state$.next({
       ...this._state$.value,
       currentInput: newCurrentInput,
+      result: undefined,
     });
   }
 
@@ -48,6 +50,7 @@ export class CalculatorService {
       currentInput: (-this.parseStringToNumber(
         this.getCurrentInput()
       )).toString(),
+      result: undefined,
     });
   }
 
@@ -60,6 +63,7 @@ export class CalculatorService {
       previousInput: (argA + argB).toString(),
       operator: '+',
       currentInput: '0',
+      result: (argA + argB).toString(),
     });
   }
 
