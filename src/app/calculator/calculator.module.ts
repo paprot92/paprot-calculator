@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalculatorComponent } from './components/calculator/calculator.component';
-import { CalculatorInputComponent } from './components/calculator-input/calculator-input.component';
+import { CalculatorPromptComponent } from './components/calculator-prompt/calculator-prompt.component';
 
 @NgModule({
-  declarations: [CalculatorComponent, CalculatorInputComponent],
+  declarations: [CalculatorComponent, CalculatorPromptComponent],
   imports: [CommonModule],
   exports: [CalculatorComponent],
 })

@@ -1,10 +1,11 @@
 <ng-container *ngIf="calculatorState$ | async as state">
-  <app-calculator-input
+  <app-calculator-prompt
     class="calculator-input"
-    [currentInput]="state.result ? state.result : state.currentInput"
     [previousInput]="state.previousInput"
     [operator]="state.operator"
-  ></app-calculator-input>
+    [currentInput]="state.currentInput"
+    [result]="state.result"
+  ></app-calculator-prompt>
   <button class="calculator-button" (click)="onRemoveDigitButtonClick()">
     X
   </button>

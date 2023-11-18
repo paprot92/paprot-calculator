@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CalculatorComponent } from './calculator.component';
-import { CalculatorInputComponent } from '../calculator-input/calculator-input.component';
+import { CalculatorPromptComponent } from '../calculator-prompt/calculator-prompt.component';
 
 describe('CalculatorComponent', () => {
   let component: CalculatorComponent;
@@ -9,7 +9,7 @@ describe('CalculatorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CalculatorComponent, CalculatorInputComponent],
+      declarations: [CalculatorComponent, CalculatorPromptComponent],
     });
     fixture = TestBed.createComponent(CalculatorComponent);
     component = fixture.componentInstance;

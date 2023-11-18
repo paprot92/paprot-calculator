@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 export interface ICalculatorState {
+  previousInput: string | null;
   currentInput: string;
-  previousInput?: string;
-  operator?: string;
-  result?: string;
+  operator: string | null;
+  result: string | null;
 }
 
 export const CALCULATOR_DEFAULT_STATE: ICalculatorState = {
+  previousInput: null,
+  operator: null,
   currentInput: '0',
+  result: null,
 };
 
 @Injectable()
@@ -29,8 +32,11 @@ export class CalculatorService {
     const newCurrentInput = this.getCurrentInput() + number.toString();
     this._state$.next({
       ...this._state$.value,
+      previousInput: this._state$.value.operator
+        ? this._state$.value.previousInput
+        : null,
       currentInput: this.parseStringToNumber(newCurrentInput).toString(),
-      result: undefined,
+      result: null,
     });
   }
 
@@ -40,7 +46,7 @@ export class CalculatorService {
     this._state$.next({
       ...this._state$.value,
       currentInput: newCurrentInput,
-      result: undefined,
+      result: null,
     });
   }
 
@@ -50,7 +56,7 @@ export class CalculatorService {
       currentInput: (-this.parseStringToNumber(
         this.getCurrentInput()
       )).toString(),
-      result: undefined,
+      result: null,
     });
   }
 
@@ -71,7 +77,7 @@ export class CalculatorService {
     switch (this._state$.value.operator) {
       case '+':
         this.sum();
-        this._state$.next({ ...this._state$.value, operator: undefined });
+        this._state$.next({ ...this._state$.value, operator: null });
         break;
 
       default:
