@@ -26,6 +26,7 @@ export class CalculatorParser {
   isNumber(numberAsString: string): boolean {
     let parsedNumber: number | null = +numberAsString;
     return (
+      numberAsString?.length > 0 &&
       !Number.isNaN(parsedNumber) &&
       parsedNumber >= -Number.MAX_SAFE_INTEGER &&
       parsedNumber <= Number.MAX_SAFE_INTEGER
@@ -36,8 +37,8 @@ export class CalculatorParser {
     const splitedStringNumber = numberAsString.split('.');
     const integerPart = splitedStringNumber[0];
     const decimalPart = splitedStringNumber[1];
-    return `${this.parseToNumber(integerPart)}${decimalPart ? '.' : ''}${
-      decimalPart ?? ''
-    }`;
+    return `${this.parseToNumber(integerPart)}${
+      decimalPart != null ? '.' : ''
+    }${decimalPart ?? ''}`;
   }
 }

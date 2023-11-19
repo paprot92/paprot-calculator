@@ -98,4 +98,24 @@ describe('CalculatorParser', () => {
     const result = service.removeLeadingZeroes('0001234');
     expect(result).toBe('1234');
   });
+
+  it('removeLeadingZeroes: should not remove trailing dot', () => {
+    const result = service.removeLeadingZeroes('0.');
+    expect(result).toBe('0.');
+  });
+
+  it('removeLeadingZeroes: should not remove trailing zero', () => {
+    const result = service.removeLeadingZeroes('0.0');
+    expect(result).toBe('0.0');
+  });
+
+  it('isNumber: should return true for 0', () => {
+    const result = service.isNumber('0');
+    expect(result).toBeTruthy();
+  });
+
+  it('isNumber: should return false for empty string', () => {
+    const result = service.isNumber('');
+    expect(result).toBeFalsy();
+  });
 });

@@ -45,6 +45,14 @@ export class CalculatorComponent {
     this._calculatorService.subtract();
   }
 
+  onMultiplyButtonClick(): void {
+    this._calculatorService.multiply();
+  }
+
+  onDivideButtonClick(): void {
+    this._calculatorService.divide();
+  }
+
   onEqualsButtonClick(): void {
     this._calculatorService.execute();
   }
