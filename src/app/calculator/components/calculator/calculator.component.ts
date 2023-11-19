@@ -41,6 +41,10 @@ export class CalculatorComponent {
     this._calculatorService.sum();
   }
 
+  onSubtractButtonClick(): void {
+    this._calculatorService.subtract();
+  }
+
   onEqualsButtonClick(): void {
     this._calculatorService.execute();
   }

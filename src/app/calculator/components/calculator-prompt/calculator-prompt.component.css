@@ -9,8 +9,7 @@
   min-height: 4.5rem;
   padding-right: 1rem;
 
-  .previous-inputs,
-  .current-inputs {
+  p {
     width: 100%;
     text-align: right;
   }
