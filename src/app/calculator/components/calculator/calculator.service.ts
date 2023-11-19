@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { CalculatorParser } from '../../services/calculator-parser.service';
 
 export interface ICalculatorState {
   previousInput: string | null;
@@ -17,6 +18,7 @@ export const CALCULATOR_DEFAULT_STATE: ICalculatorState = {
 
 @Injectable()
 export class CalculatorService {
+  private _parser: CalculatorParser = inject(CalculatorParser);
   private _state$: BehaviorSubject<ICalculatorState> = new BehaviorSubject(
     CALCULATOR_DEFAULT_STATE
   );
@@ -29,15 +31,24 @@ export class CalculatorService {
     if (number.toString().length > 1) {
       throw new Error(`Invalid input: ${number} is not a digit.`);
     }
-    const newCurrentInput = this.getCurrentInput() + number.toString();
+    const newCurrentInput = this._parser.removeLeadingZeroes(
+      this.getCurrentInput() + number.toString()
+    );
+    const parsedNewCurrentInput = this._parser
+      .parseToNumber(newCurrentInput)
+      .toString();
+    const keepOriginalInput = this._parser.isNumber(newCurrentInput);
+    console.log('processDigitInput1', { ...this._state$.value });
+
     this._state$.next({
       ...this._state$.value,
       previousInput: this._state$.value.operator
         ? this._state$.value.previousInput
         : null,
-      currentInput: this.parseStringToNumber(newCurrentInput).toString(),
+      currentInput: keepOriginalInput ? newCurrentInput : parsedNewCurrentInput,
       result: null,
     });
+    console.log('processDigitInput2', { ...this._state$.value });
   }
 
   addComma(): void {
@@ -53,7 +64,7 @@ export class CalculatorService {
   changeCurrentNumberSign(): void {
     this._state$.next({
       ...this._state$.value,
-      currentInput: (-this.parseStringToNumber(
+      currentInput: (-this._parser.parseToNumber(
         this.getCurrentInput()
       )).toString(),
       result: null,
@@ -61,10 +72,10 @@ export class CalculatorService {
   }
 
   sum(): void {
-    const argA = this.parseStringToNumber(
+    const argA = this._parser.parseToNumber(
       this._state$.value.previousInput ?? '0'
     );
-    const argB = this.parseStringToNumber(this.getCurrentInput());
+    const argB = this._parser.parseToNumber(this.getCurrentInput());
     this._state$.next({
       previousInput: (argA + argB).toString(),
       operator: '+',
@@ -73,10 +84,27 @@ export class CalculatorService {
     });
   }
 
+  subtract(): void {
+    const argA = this._state$.value.previousInput
+      ? this._parser.parseToNumber(this._state$.value.previousInput)
+      : null;
+    const argB = this._parser.parseToNumber(this.getCurrentInput());
+    this._state$.next({
+      previousInput: argA ? (argA - argB).toString() : argB.toString(),
+      operator: '-',
+      currentInput: '0',
+      result: argA ? (argA - argB).toString() : argB.toString(),
+    });
+  }
+
   execute(): void {
     switch (this._state$.value.operator) {
       case '+':
         this.sum();
+        this._state$.next({ ...this._state$.value, operator: null });
+        break;
+      case '-':
+        this.subtract();
         this._state$.next({ ...this._state$.value, operator: null });
         break;
 
@@ -109,16 +137,5 @@ export class CalculatorService {
 
   private getCurrentInput(): string {
     return this._state$.value.currentInput;
-  }
-
-  private parseStringToNumber(numberAsString: string): number {
-    const defaultValue = numberAsString.startsWith('-')
-      ? -Number.MAX_VALUE
-      : Number.MAX_VALUE;
-    let parsedNumber: number | undefined = +numberAsString;
-    if (Number.isNaN(parsedNumber)) parsedNumber = 0;
-    if (parsedNumber < -Number.MAX_VALUE || parsedNumber > Number.MAX_VALUE)
-      parsedNumber = undefined;
-    return parsedNumber ?? defaultValue;
   }
 }

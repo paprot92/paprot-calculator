@@ -50,7 +50,7 @@ describe('CalculatorService', () => {
     setUpCurrentNumberToMaxValue(service);
     expectStateToBeEqualTo(service, {
       ...CALCULATOR_DEFAULT_STATE,
-      currentInput: Number.MAX_VALUE.toString(),
+      currentInput: Number.MAX_SAFE_INTEGER.toString(),
     });
   });
 
@@ -60,7 +60,7 @@ describe('CalculatorService', () => {
     service.changeCurrentNumberSign();
     expectStateToBeEqualTo(service, {
       ...CALCULATOR_DEFAULT_STATE,
-      currentInput: (-Number.MAX_VALUE).toString(),
+      currentInput: (-Number.MAX_SAFE_INTEGER).toString(),
     });
   });
 
@@ -69,7 +69,7 @@ describe('CalculatorService', () => {
     service.processDigitInput(9);
     expectStateToBeEqualTo(service, {
       ...CALCULATOR_DEFAULT_STATE,
-      currentInput: Number.MAX_VALUE.toString(),
+      currentInput: Number.MAX_SAFE_INTEGER.toString(),
     });
   });
 
@@ -78,7 +78,7 @@ describe('CalculatorService', () => {
     service.changeCurrentNumberSign();
     expectStateToBeEqualTo(service, {
       ...CALCULATOR_DEFAULT_STATE,
-      currentInput: (-Number.MAX_VALUE).toString(),
+      currentInput: (-Number.MAX_SAFE_INTEGER).toString(),
     });
   });
 
@@ -109,6 +109,17 @@ describe('CalculatorService', () => {
     expectStateToBeEqualTo(service, {
       ...CALCULATOR_DEFAULT_STATE,
       currentInput: '12.34',
+    });
+  });
+
+  it('should handle 0.00001', () => {
+    service.processDigitInput(0);
+    service.addComma();
+    processMultipleInput(service, [0, 0, 0, 0]);
+    service.processDigitInput(1);
+    expectStateToBeEqualTo(service, {
+      ...CALCULATOR_DEFAULT_STATE,
+      currentInput: '0.00001',
     });
   });
 
@@ -192,6 +203,20 @@ describe('CalculatorService', () => {
     });
   });
 
+  it('should reset result and previous input', () => {
+    service.processDigitInput(2);
+    service.sum();
+    service.processDigitInput(3);
+    service.execute();
+    service.processDigitInput(1);
+    expectStateToBeEqualTo(service, {
+      previousInput: null,
+      currentInput: '1',
+      operator: null,
+      result: null,
+    });
+  });
+
   it('sum should set operator and total 1', () => {
     service.sum();
     expectStateToBeEqualTo(service, {
@@ -255,23 +280,33 @@ describe('CalculatorService', () => {
     });
   });
 
-  it('should reset result and previous input', () => {
+  it('should subtract numbers 1', () => {
     service.processDigitInput(2);
-    service.sum();
+    service.subtract();
     service.processDigitInput(3);
-    service.execute();
-    service.processDigitInput(1);
+    service.subtract();
     expectStateToBeEqualTo(service, {
-      previousInput: null,
-      currentInput: '1',
-      operator: null,
-      result: null,
+      ...CALCULATOR_DEFAULT_STATE,
+      previousInput: '-1',
+      operator: '-',
+      currentInput: '0',
+      result: '-1',
     });
   });
 
-  it('should handle number max limit + 1', () => {});
-
-  it('should subtract numbers', () => {});
+  it('should subtract numbers 2', () => {
+    service.processDigitInput(3);
+    service.subtract();
+    service.processDigitInput(2);
+    service.execute();
+    expectStateToBeEqualTo(service, {
+      ...CALCULATOR_DEFAULT_STATE,
+      previousInput: '1',
+      currentInput: '0',
+      operator: null,
+      result: '1',
+    });
+  });
 
   it('should handle number min limit - 1', () => {});
 
