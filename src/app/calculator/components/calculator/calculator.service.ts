@@ -38,8 +38,6 @@ export class CalculatorService {
       .parseToNumber(newCurrentInput)
       .toString();
     const keepOriginalInput = this._parser.isNumber(newCurrentInput);
-    console.log('processDigitInput1', { ...this._state$.value });
-
     this._state$.next({
       ...this._state$.value,
       previousInput: this._state$.value.operator
@@ -48,7 +46,6 @@ export class CalculatorService {
       currentInput: keepOriginalInput ? newCurrentInput : parsedNewCurrentInput,
       result: null,
     });
-    console.log('processDigitInput2', { ...this._state$.value });
   }
 
   addComma(): void {
